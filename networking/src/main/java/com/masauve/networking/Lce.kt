@@ -1,4 +1,4 @@
-package com.masauve.countries
+package com.masauve.networking
 
 sealed class Lce<T> {
     class Loading<T> : Lce<T>()

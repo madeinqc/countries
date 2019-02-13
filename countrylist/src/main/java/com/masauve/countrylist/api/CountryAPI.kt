@@ -1,4 +1,4 @@
-package com.masauve.countries
+package com.masauve.countrylist.api
 
 import com.squareup.moshi.JsonClass
 import io.reactivex.Single
