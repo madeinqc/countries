@@ -18,6 +18,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
@@ -40,8 +44,6 @@ dependencies {
     // Koin for Android
     implementation 'org.koin:koin-android:2.0.0-beta-1'
     implementation 'org.koin:koin-android-viewmodel:2.0.0-beta-1'
-
-    // TODO: Include Anko and/or DataBinding
 
     implementation project(':countrylist')
     // TODO: Needed for Lce, should Lce be moved?
