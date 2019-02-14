@@ -15,6 +15,7 @@ import io.reactivex.subjects.PublishSubject.create
 
 abstract class BaseMviViewModel<Intent : MviIntent, Action : MviAction, Result : MviResult, ViewState : MviViewState, ViewEffect : MviViewEffect>(
     app: Application,
+    initialViewState: ViewState,
     stateReducer: BiFunction<ViewState, Result, ViewState>,
     viewEffectTransformer: ObservableTransformer<Result, ViewEffect>,
     interactor: MviInteractor<Action, Result>
@@ -23,9 +24,7 @@ abstract class BaseMviViewModel<Intent : MviIntent, Action : MviAction, Result :
     protected var viewModelDisposable: Disposable? = null
         private set
 
-    protected abstract val initialViewState: ViewState
-
-    abstract val intentsErrorHandler: ((t: Throwable) -> Unit)
+    protected abstract val intentsErrorHandler: ((t: Throwable) -> Unit)
 
     /**
      *  Proxy subject used to keep the stream alive even after the UI gets recycled.
@@ -51,7 +50,7 @@ abstract class BaseMviViewModel<Intent : MviIntent, Action : MviAction, Result :
             .publish()
 
         viewChanges
-            .compose(viewStateTransformer(stateReducer))
+            .compose(viewStateTransformer(initialViewState, stateReducer))
             .subscribe(viewStateSubject)
 
         viewChanges
@@ -66,7 +65,7 @@ abstract class BaseMviViewModel<Intent : MviIntent, Action : MviAction, Result :
         viewModelDisposable?.dispose()
     }
 
-    fun processInputs(vararg intents: Observable<out Intent>): Disposable {
+    override fun processIntents(vararg intents: Observable<out Intent>): Disposable {
         return Observable.mergeArray(*intents)
             .subscribe(
                 { intentSubject.onNext(it) },
@@ -81,6 +80,7 @@ abstract class BaseMviViewModel<Intent : MviIntent, Action : MviAction, Result :
         .observeOn(AndroidSchedulers.mainThread())
 
     private fun viewStateTransformer(
+        initialViewState: ViewState,
         stateReducer: BiFunction<ViewState, Result, ViewState>
     ): ObservableTransformer<Result, ViewState> {
         return ObservableTransformer { upstream ->

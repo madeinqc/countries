@@ -1,15 +1,16 @@
 package com.masauve.mvi
 
 import io.reactivex.Observable
+import io.reactivex.disposables.Disposable
 
 /**
  *  Subscribes to a [MviView]'s [MviIntent] to process them and return a [MviViewState].
  */
 interface MviViewModel<Intent : MviIntent, ViewState : MviViewState, ViewEffect : MviViewEffect> {
 
-    val stateObservable: Observable<ViewState>
+    val viewStateObservable: Observable<ViewState>
 
     val viewEffectObservable: Observable<ViewEffect>
 
-    fun processIntents(intent: Observable<Intent>)
+    fun processIntents(vararg intents: Observable<out Intent>): Disposable
 }

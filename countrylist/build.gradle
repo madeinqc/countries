@@ -25,6 +25,7 @@ android {
 }
 
 dependencies {
+    // TODO: Extract the versions to the root project and share them across modules
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation 'com.android.support:appcompat-v7:28.0.0'
@@ -40,6 +41,9 @@ dependencies {
     implementation 'io.reactivex.rxjava2:rxjava:2.2.6'
 
     implementation 'org.koin:koin-android:2.0.0-beta-1'
+    implementation 'org.koin:koin-android-viewmodel:2.0.0-beta-1'
 
     implementation project(":networking")
+    implementation project(":androidmvi")
+    implementation project(":mvi")
 }

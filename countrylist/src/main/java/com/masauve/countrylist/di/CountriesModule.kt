@@ -2,7 +2,9 @@ package com.masauve.countrylist.di
 
 import com.masauve.countrylist.api.CountryAPI
 import com.masauve.countrylist.api.CountryRepository
+import com.masauve.countrylist.mvi.CountryListViewModel
 import com.masauve.networking.Networking
+import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
 
@@ -18,4 +20,6 @@ val countryListModule = module {
     }
 
     single { CountryRepository(get()) }
+
+    viewModel { CountryListViewModel(get(), get()) }
 }

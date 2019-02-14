@@ -10,7 +10,8 @@ import io.reactivex.Observable
 // TODO: Cache the values to Database (room?)
 // TODO: Balance where to take the data based on freshness
 class CountryRepository(private val countryApi: com.masauve.countrylist.api.CountryAPI) {
-    fun listCountries(): Observable<Lce<List<Country>>> {
+    // TODO: Implement the forceReload once the cache is done
+    fun listCountries(forceReload: Boolean): Observable<Lce<List<Country>>> {
         return countryApi.listCountries()
             .doOnError { TODO("Include Timber library and log") }
             .map { response ->
