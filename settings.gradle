@@ -1,1 +1,1 @@
-include ':app', ':networking', ':countrylist'
+include ':app', ':networking', ':countrylist', ':mvi', ':androidmvi'
