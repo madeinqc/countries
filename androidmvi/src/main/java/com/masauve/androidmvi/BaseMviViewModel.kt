@@ -2,13 +2,13 @@ package com.masauve.androidmvi
 
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
-import android.arch.lifecycle.ViewModel
-import android.arch.lifecycle.ViewModelProvider
 import com.masauve.mvi.*
 import io.reactivex.Observable
 import io.reactivex.ObservableTransformer
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.functions.BiFunction
+import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import io.reactivex.subjects.PublishSubject.create
@@ -45,6 +45,7 @@ abstract class BaseMviViewModel<Intent : MviIntent, Action : MviAction, Result :
 
     init {
         val viewChanges = intentSubject
+            .observeOn(Schedulers.computation())
             .map(::actionFromIntent)
             .compose(interactor.actionProcessor)
             .publish()
@@ -73,9 +74,11 @@ abstract class BaseMviViewModel<Intent : MviIntent, Action : MviAction, Result :
             )
     }
 
-    fun viewStateObservable(): Observable<ViewState> = viewStateSubject.hide()
+    override val viewStateObservable: Observable<ViewState> = viewStateSubject.hide()
+        .observeOn(AndroidSchedulers.mainThread())
 
-    fun viewEffectObservable(): Observable<ViewEffect> = viewEffectSubject.hide()
+    override val viewEffectObservable: Observable<ViewEffect> = viewEffectSubject.hide()
+        .observeOn(AndroidSchedulers.mainThread())
 
     private fun viewStateTransformer(
         stateReducer: BiFunction<ViewState, Result, ViewState>
