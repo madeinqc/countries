@@ -1,23 +1,16 @@
 apply plugin: 'java-library'
 apply plugin: 'kotlin'
 
-dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-
-    implementation 'io.reactivex.rxjava2:rxjava:2.2.6'
-}
-
-sourceCompatibility = "7"
-targetCompatibility = "7"
+sourceCompatibility = "8"
+targetCompatibility = "8"
 
 buildscript {
-    ext.kotlin_version = '1.3.21'
     repositories {
         mavenCentral()
     }
+
     dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath Libraries.kotlinGradle
     }
 }
 
@@ -35,4 +28,12 @@ compileTestKotlin {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation Libraries.kotlin
+
+    implementation Libraries.rxJava
 }

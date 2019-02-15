@@ -4,13 +4,13 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion Versions.compileSdk
 
     defaultConfig {
-        minSdkVersion 23
-        targetSdkVersion 28
-        versionCode 1
-        versionName "1.0"
+        minSdkVersion Versions.minSdk
+        targetSdkVersion Versions.targetSdk
+        versionCode Releases.versionCode
+        versionName Releases.versionName
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
@@ -21,52 +21,40 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-
 }
 
 dependencies {
-    // TODO: Extract the versions to the root project and share them across modules
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation 'com.android.support:support-v4:28.0.0'
-    implementation 'com.android.support:appcompat-v7:28.0.0'
-    implementation 'com.android.support:recyclerview-v7:28.0.0'
-    implementation 'com.android.support:design:28.0.0'
+    implementation SupportLibraries.v4
+    implementation SupportLibraries.appCompat
+    implementation SupportLibraries.recyclerView
+    implementation SupportLibraries.design
+
+    // TODO: Extract the versions of tests libraries to the Dependencies.kt file
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
-    implementation('com.squareup.moshi:moshi-kotlin:1.8.0')
-    kapt('com.squareup.moshi:moshi-kotlin-codegen:1.8.0')
+    implementation Libraries.moshi
+    kapt(Libraries.moshiCodegen)
 
-    implementation 'com.squareup.retrofit2:retrofit:2.5.0'
+    implementation Libraries.retrofit
 
-    implementation 'io.reactivex.rxjava2:rxjava:2.2.6'
-    implementation 'io.reactivex.rxjava2:rxkotlin:2.3.0'
+    implementation Libraries.rxJava
+    implementation Libraries.rxKotlin
+    implementation Libraries.rxBinding
 
-    implementation 'org.koin:koin-android:2.0.0-beta-1'
-    implementation 'org.koin:koin-android-viewmodel:2.0.0-beta-1'
+    implementation Libraries.koinAndroid
+    implementation Libraries.koinViewModel
 
-    // Anko Layouts
-    implementation "org.jetbrains.anko:anko-sdk25:$anko_version" // sdk15, sdk19, sdk21, sdk23 are also available
+    implementation AnkoLibraries.layouts
+    implementation AnkoLibraries.appcompat
+    implementation AnkoLibraries.design
+    implementation AnkoLibraries.recyclerView
+    implementation AnkoLibraries.constraintLayout
 
-    // Appcompat-v7 (Anko Layouts)
-    implementation "org.jetbrains.anko:anko-appcompat-v7:$anko_version"
-
-    // Design
-    implementation "org.jetbrains.anko:anko-design:$anko_version"
-
-    // RecyclerView-v7
-    implementation "org.jetbrains.anko:anko-recyclerview-v7:$anko_version"
-    implementation "org.jetbrains.anko:anko-recyclerview-v7-coroutines:$anko_version"
-
-    // ConstraintLayout
-    implementation "org.jetbrains.anko:anko-constraint-layout:$anko_version"
-
-    // RxBinding
-    implementation 'com.jakewharton.rxbinding2:rxbinding-kotlin:2.2.0'
-
-    implementation project(":networking")
-    implementation project(":androidmvi")
-    implementation project(":mvi")
+    implementation project(Modules.networking)
+    implementation project(Modules.androidmvi)
+    implementation project(Modules.mvi)
 }

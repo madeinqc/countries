@@ -1,23 +1,15 @@
 apply plugin: 'java-library'
 apply plugin: 'kotlin'
 
-dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+sourceCompatibility = "8"
+targetCompatibility = "8"
 
-    implementation 'com.squareup.retrofit2:retrofit:2.5.0'
-    implementation 'com.squareup.retrofit2:converter-moshi:2.5.0'
-    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
-}
-
-sourceCompatibility = "7"
-targetCompatibility = "7"
 buildscript {
     repositories {
         mavenCentral()
     }
     dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath Libraries.kotlinGradle
     }
 }
 repositories {
@@ -32,4 +24,14 @@ compileTestKotlin {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation Libraries.kotlin
+
+    implementation Libraries.retrofit
+    implementation Libraries.rxJavaAdapter
+    implementation Libraries.moshiConverter
 }

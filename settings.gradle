@@ -1,1 +1,1 @@
-include ':app', ':networking', ':countrylist', ':mvi', ':androidmvi'
+include Modules.app, Modules.networking, Modules.countries, Modules.mvi, Modules.androidmvi
